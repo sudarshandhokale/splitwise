@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app="splitwise">
+<head>
+  <base href="/">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>splitwise</title>
+  <%= action_cable_meta_tag %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= csrf_meta_tags %>
+</head>
+<body ng-controller="MainCtrl">
+  <span us-spinner spinner-key="spinner" spinner-theme="bigBlue"></span>
+  <div class="mainpage">
+    <div ng-show="authenticateUser">
+      <%= render 'layouts/header'%>
+    </div>
+    <div flash-message="5000" ></div>
+    <div class="main-view-container" ui-view></div>
+    <div ng-show="authenticateUser">
+      <%= render 'layouts/footer'%>
+    </div>
+  </div>
+</body>
+</html>

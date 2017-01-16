@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-md-4 form">
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <!-- Login -->
+          <form ng-show="form.login" class="box active" id="box-login" ng-controller="LoginCtrl as user" ng-submit="user.login()" novalidate>
+            <div class="login-form" id="login-form"> <!--login form start-->
+             <div class="box1">
+               <div class="title">Sign In</div>
+               <div class="form-group">
+                <input type="email" class="form-control" placeholder="Email" ng-model="user.credentials.email">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" ng-model="user.credentials.password">
+              </div>
+              <input type="submit" class="btn btn-sign btn-block" value="Sign In">
+              <h6><a href="#" ng-click="forgetPasswordForm()">Forgot Password?</a></h6>
+            </div>
+            <div class="box2">
+              <h6>Don't have an account? <span><a href='#' ng-click="registerForm()">Sign Up</a></span></h6>
+            </div>
+          </div> <!--login form end-->
+        </form>
+
+        <!-- Register -->
+        <form ng-show="form.register" class="box active" id="box-register" name="registerForm" ng-controller="RegisterCtrl as user" ng-submit="user.register()" novalidate>
+          <div class="login-form" id="sign-up-form"> <!--Sign up form start-->
+            <div class="box1">
+              <div class="title">Sign Up</div>
+              <div class="form-group" ng-class="errorClass('name')">
+                <input type="text" class="form-control input-underline" placeholder="Full Name" name="name" ng-model="registers.name" server-error />
+                <span class="help-block pull-left" ng-show="registerForm.name.$error.server">Full {{errors.name}}</span>
+              </div>
+              <div class="form-group" ng-class="errorClass('email')">
+                <input type="email" class="form-control input-underline" placeholder="Email" name="email" ng-model="registers.email" server-error />
+                <span class="help-block pull-left" ng-show="registerForm.email.$error.server">{{errors.email}}</span>
+              </div>
+              <div class="form-group" ng-class="errorClass('password')">
+                <input type="password" class="form-control input-underline" placeholder="Password" name="password" ng-model="registers.password" server-error />
+                <span class="help-block pull-left" ng-show="registerForm.password.$error.server">{{errors.password}}</span>
+              </div>
+              <div class="form-group" ng-class="errorClass('password_confirmation')">
+                <input type="password" class="form-control input-underline" placeholder="Confirm Password" name="password_confirmation" ng-model="registers.password_confirmation" server-error />
+                <span class="help-block pull-left" ng-show="registerForm.password_confirmation.$error.server">{{errors.password_confirmation}}</span>
+              </div>
+              <input type="submit" class="btn btn-sign btn-block" value="Sign Up">
+              <h6><a href="#" ng-click="forgetPasswordForm()">Forgot Password?</a></h6>
+            </div> <!--Sign up form end-->
+            <div class="box2">
+              <h6>Already have account? <span><a href="#" ng-click="loginForm()">Sign In</a></span></h6>
+            </div>
+          </div>
+        </form>
+
+        <!-- Forgot Password -->
+        <form ng-show="form.forget_password" name="forgetPassForm" class="box active" id="box-reset" ng-controller="ForgetPasswordCtrl as user" ng-submit="user.forgetPassword()" novalidate>
+          <div class="login-form" id="forgot-password-form"> <!--forgot password form start-->
+            <div class="box1">
+              <div class="title">Forgot Password</div>
+              <div class="form-group">
+                <input type="email" class="form-control" placeholder="Email" name="email" ng-model="forgetpassword.email">
+              </div>
+              <button type="submit" class="btn btn-sign btn-block">Reset Password</button>
+              <h6>Already have an account? <span><a href="#" ng-click="loginForm()">Sign In</a></span></h6>
+            </div>
+            <div class="box2">
+              <h6>Don’t have an account? <span><a href="#" ng-click="registerForm()">Sign Up</a></span></h6>
+            </div>
+          </div> <!--forgot password form end-->
+        </form>
+      </div><!--/.col-md-12-->
+    </div>
+  </div>
+</div>
+</div>

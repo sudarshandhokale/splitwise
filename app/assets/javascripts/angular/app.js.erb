@@ -1,0 +1,217 @@
+var myApp = angular.module('splitwise', [
+  'ngResource',
+  'ngAnimate',
+  'ui.router',
+  'templates',
+  'flash',
+  'ng-token-auth',
+  'ngFileUpload',
+  'angularMoment',
+  'angularUtils.directives.dirPagination',
+  'ui.select',
+  'sc.select',
+  'angularSpinner',
+  'ngActionCable'
+]);
+
+myApp.config(['$authProvider', '$httpProvider',
+  function($authProvider, $httpProvider){
+  $authProvider.configure({
+    apiUrl: "<%= ENV['APP_URL'] %>/api/v1"
+  });
+  $httpProvider.interceptors.push('httpRequestInterceptor');
+}]);
+
+myApp.config(['usSpinnerConfigProvider', function (usSpinnerConfigProvider) {
+  usSpinnerConfigProvider.setTheme('bigBlue', {color: 'blue', radius: 20});
+}]);
+
+myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
+  function($stateProvider, $urlRouterProvider, $locationProvider) {
+  $stateProvider.state('*', {
+    url: '/login',
+    templateUrl: 'index.html'
+  }).state('reset-password', {
+    url: '/reset_password',
+    templateUrl: 'reset_password.html'
+  }).state('home', {
+    url: '/',
+    templateUrl: 'home.html'
+  });
+  $urlRouterProvider.otherwise('/');
+  $locationProvider.html5Mode(true);
+}]);
+
+myApp.run(['$rootScope', '$state', function($rootScope, $state) {
+  $rootScope.$on('auth:password-reset-confirm-success', function() {
+    $state.go('reset-password');
+  });
+  $rootScope.$on('auth:email-confirmation-success', function() {
+    $state.go('home');
+  });
+}]);
+
+myApp.factory('httpRequestInterceptor',['ipCookie', function (ipCookie) {
+  return {
+    request: function (config) {
+      if(ipCookie('auth_headers')) {
+        var header = ipCookie('auth_headers');
+        config.headers['access-token'] = header['access-token'];
+        config.headers['client'] = header['client'];
+        config.headers['uid'] = header['uid'];
+      }
+      return config;
+    }
+  };
+}]);
+myApp.factory('Role', ['$resource',function($resource){
+ return $resource('api/v1/roles', {},{
+   all: { method: 'GET' }
+ });
+}]);
+myApp.factory('Country', ['$resource',function($resource){
+ return $resource('api/v1/countries', {},{
+   all: { method: 'GET' }
+ });
+}]);
+myApp.factory('State', ['$resource',function($resource){
+ return $resource('api/v1/states', {},{
+   all: { method: 'GET' }
+ });
+}]);
+myApp.factory('City', ['$resource',function($resource){
+ return $resource('api/v1/cities', {},{
+   all: { method: 'GET' }
+ });
+}]);
+
+myApp.factory('Spin', ['usSpinnerService', function (usSpinnerService) {
+  return {
+    startSpin: function () {
+      usSpinnerService.spin('spinner');
+      $('.mainpage').css({opacity: 0.5});
+    },
+    stopSpin: function () {
+      usSpinnerService.stop('spinner');
+      $('.mainpage').css({opacity: 1});
+    }
+  };
+}]);
+
+myApp.directive('serverError', function(){
+  return {
+    restrict: 'A',
+    require: '?ngModel',
+    link: function(scope,element,attrs,ctrl){
+      return element.on('change keyup', function(){
+        return scope.$apply(function(){
+          return ctrl.$setValidity('server', true);
+        });
+      });
+    }
+  };
+});
+
+myApp.directive('capitalizeFirst', ['uppercaseFilter', '$parse',
+  function (uppercaseFilter, $parse) {
+  return {
+    require: 'ngModel',
+    scope: {
+      ngModel: "="
+    },
+    link: function (scope, element, attrs, modelCtrl) {
+      scope.$watch("ngModel", function () {
+        if (scope.ngModel != undefined)
+          scope.ngModel = scope.ngModel.replace(/^(.)|\s(.)/g, function(v){ return v.toUpperCase( ); });
+      });
+    }
+  };
+}]);
+
+myApp.directive("fileread", [function () {
+  return {
+    scope: {
+      fileread: "="
+    },
+    link: function (scope, element, attributes) {
+      element.bind("change", function (changeEvent) {
+        var reader = new FileReader();
+        reader.onload = function (loadEvent) {
+          scope.$apply(function () {
+            scope.fileread = loadEvent.target.result;
+          });
+        }
+        reader.readAsDataURL(changeEvent.target.files[0]);
+      });
+    }
+  }
+}]);
+
+myApp.directive("multiplefileread", function () {
+  return {
+    scope: {
+      multiplefileread: "="
+    },
+    link: function (scope, element, attributes) {
+      element.bind("change", function (changeEvent) {
+        var readers = [] ,
+            files = changeEvent.target.files ,
+            datas = [] ;
+        for ( var i = 0 ; i < files.length ; i++ ) {
+          readers[ i ] = new FileReader();
+          readers[ i ].onload = function (loadEvent) {
+            datas.push( loadEvent.target.result );
+            if ( datas.length === files.length ){
+              scope.$apply(function () {
+                scope.multiplefileread = datas;
+              });
+            }
+          }
+          readers[ i ].readAsDataURL( files[i] );
+        }
+      });
+    }
+  }
+});
+
+myApp.directive('formatDate', function(){
+  return {
+    require: 'ngModel',
+    link: function(scope, elem, attr, ngModelCtrl) {
+      ngModelCtrl.$formatters.push(function(modelValue){
+        if(modelValue) {
+          return new Date(modelValue);
+        }
+      });
+    }
+  };
+});
+
+myApp.directive('ngEnter', function() {
+    return function(scope, element, attrs) {
+        element.bind("keydown", function(e) {
+            if(e.which === 13) {
+                scope.$apply(function(){
+                    scope.$eval(attrs.ngEnter, {'e': e});
+                });
+                e.preventDefault();
+            }
+        });
+    };
+});
+
+myApp.directive('capitalizeAll', ['uppercaseFilter', '$parse',
+  function (uppercaseFilter, $parse) {
+  return {
+    require: 'ngModel',
+    scope: {
+      ngModel: "="
+    },
+    link: function (scope, element, attrs, modelCtrl) {
+      scope.$watch("ngModel", function () {
+        if (scope.ngModel != undefined)
+          scope.ngModel = scope.ngModel.toUpperCase();
+      });
+    }
+  };
+}]);
