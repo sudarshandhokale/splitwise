@@ -42,12 +42,15 @@ app.controller('neweventCtrl', ['$scope', 'Spin', 'Events', 'User', 'ipCookie', 
   };
 }]);
 
-app.controller('eventCtrl', ['$scope', 'Spin', 'Events', 'Event','$state', 'ipCookie',
-  function($scope, Spin, Events, Event, $state, ipCookie){
+app.controller('eventCtrl', ['$scope', 'Spin', 'Events', 'Event','$state', 'ipCookie', 'User',
+  function($scope, Spin, Events, Event, $state, ipCookie, User){
   $scope.payee_users = {};
   $scope.payer_users = {};
   $scope.users = [];
   $scope.user = ipCookie('user');
+  User.all(function(resp){
+    $scope.users_list = resp.result.users;
+  });
   Events.all(function(resp){
     $scope.event_logs = resp.result.hash;
     $scope.events = resp.result.hash.events;
@@ -79,21 +82,32 @@ app.controller('eventCtrl', ['$scope', 'Spin', 'Events', 'Event','$state', 'ipCo
         };
       });
     });
-    angular.forEach($scope.payee_users, function(value, key) {
-      var payer = {};
-      angular.forEach($scope.payer_users,function(v, k){
-        if(k == key){ payer=v };
+    $scope.users_list.forEach(function(u) {
+      var payer = {}, payee = {};
+      angular.forEach($scope.payee_users,function(v, k){
+        if(k == u.id){ payee=v };
       });
-      if(value.amount >= payer.amount){
-        value.amount -= payer.amount;
-        value.ids += ',' + payer.ids;
-        value['status'] = 'lent';
-        $scope.users.push(value);
-      }else if (payer.amount > value.amount){
-        payer.amount -= value.amount;
-        payer.ids += ',' + value.ids;
+      angular.forEach($scope.payer_users,function(v, k){
+        if(k == u.id){ payer=v };
+      });
+      if(payee.amount >= payer.amount){
+        payee.amount -= payer.amount;
+        payee.ids += ',' + payer.ids;
+        payee['status'] = 'lent';
+        $scope.users.push(payee);
+      }else if (payer.amount > payee.amount){
+        payer.amount -= payee.amount;
+        payer.ids += ',' + payee.ids;
         payer['status'] = 'owe';
         $scope.users.push(payer);
+      }else{
+        if(payee){
+          payee['status'] = 'lent';
+          $scope.users.push(payee);
+        }else{
+          payer['status'] = 'owe';
+          $scope.users.push(payer);
+        }
       }
     });
   });
