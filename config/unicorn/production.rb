@@ -12,7 +12,7 @@ stdout_path "log/unicorn.stdout.log"
 
 # workers
 worker_processes 3
-timeout 15
+timeout 3600
 
 # use correct Gemfile on restarts
 before_exec do |server|
