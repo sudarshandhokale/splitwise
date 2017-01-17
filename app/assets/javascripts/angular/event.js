@@ -4,6 +4,7 @@ app.controller('neweventCtrl', ['$scope', 'Spin', 'Events', 'User', 'ipCookie', 
   User.all(function(resp){
     $scope.users = resp.result.users;
   });
+  $scope.user = ipCookie('user');
   $scope.errors = {};
   $scope.event = {user_events_attributes: {'0': {user_id: ipCookie('user').id}}};
   $scope.contributers = 0;
@@ -46,6 +47,7 @@ app.controller('eventCtrl', ['$scope', 'Spin', 'Events', 'Event','$state', 'ipCo
   $scope.payee_users = {};
   $scope.payer_users = {};
   $scope.users = [];
+  $scope.user = ipCookie('user');
   Events.all(function(resp){
     $scope.event_logs = resp.result.hash;
     $scope.events = resp.result.hash.events;
