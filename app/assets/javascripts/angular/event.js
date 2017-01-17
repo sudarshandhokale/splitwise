@@ -89,7 +89,7 @@ app.controller('eventCtrl', ['$scope', 'Spin', 'Events', 'Event','$state', 'ipCo
         value.ids += ',' + payer.ids;
         value['status'] = 'lent';
         $scope.users.push(value);
-      }else{
+      }else if (payer.amount > value.amount){
         payer.amount -= value.amount;
         payer.ids += ',' + value.ids;
         payer['status'] = 'owe';

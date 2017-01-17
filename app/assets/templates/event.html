@@ -37,8 +37,9 @@
 					<div class="col-md-4 col-md-offset-1">
 						<div class="form-group" ng-class="errorClass('user_events.user')">
 							<label>Contributor 1</label>
-							<sc-select ng-model="event.user_events_attributes['0'].user_id" sc-options="user.id as user.email for user in users" name="user_events.user" placeholder="Search for a User" class="input-underline pointer-event-none" server-error>
+							<sc-select ng-model="event.user_events_attributes['0'].user_id" sc-options="user.id as user.email for user in users" name="user_events.user" placeholder="Search for a User" class="input-underline pointer-event-none" server-error ng-hide="true">
 	  					</sc-select>
+	  					<b>Self contributation</b>
 							<span class="help-block pull-left" ng-show="eventForm['user_events.user'].$error.server">{{errors['user_events.user']}}</span>
 						</div>
 					</div>	
