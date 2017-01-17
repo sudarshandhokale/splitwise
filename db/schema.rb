@@ -20,9 +20,9 @@ ActiveRecord::Schema.define(version: 20170116133832) do
     t.integer  "payer_id"
     t.integer  "payee_id"
     t.decimal  "amount"
-    t.boolean  "settled"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.boolean  "settled",    default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.index ["event_id"], name: "index_event_logs_on_event_id", using: :btree
     t.index ["payee_id"], name: "index_event_logs_on_payee_id", using: :btree
     t.index ["payer_id"], name: "index_event_logs_on_payer_id", using: :btree

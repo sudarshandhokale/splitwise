@@ -1,10 +1,11 @@
 class Api::V1::EventsController < Api::V1::ApiApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    @event_logs = EventLog.logs_hash(current_user.id)
+    @event_logs.merge!(events: EventLog.events(current_user.id))
+    render json: success(@event_logs), status: :ok
   end
 
   # POST /events
@@ -21,19 +22,15 @@ class Api::V1::EventsController < Api::V1::ApiApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
-    if @event.update(event_params)
-      render json: success(@event), status: :ok
+    @event_logs = EventLog.where(id: params[:ids])
+    if @event_logs.update_all(settled: true)
+      render json: success(@event_logs), status: :ok
     else
-      render json: error(@event), status: :unprocessable_entity
+      render json: error(@event_logs), status: :unprocessable_entity
     end
   end
 
   private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_event
-    @event = Event.find(params[:id])
-  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params

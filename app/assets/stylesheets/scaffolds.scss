@@ -22,11 +22,6 @@ pre {
 
 a {
   color: #000;
-
-  &:visited {
-    color: #666;
-  }
-
   &:hover {
     color: #fff;
     background-color: #000;
@@ -90,4 +85,8 @@ label {
 
 .middle-body {
   padding-top: 30px;
+}
+
+.pointer-event-none {
+  pointer-events: none;
 }

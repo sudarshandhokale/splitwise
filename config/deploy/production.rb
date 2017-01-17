@@ -3,7 +3,7 @@
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-server '52.38.115.77', user: 'ubuntu', roles: %w{app db web}, my_property: :my_value
+server 'demotestapp.com', user: 'ubuntu', roles: %w{app db web}, my_property: :my_value
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
 
@@ -17,9 +17,9 @@ server '52.38.115.77', user: 'ubuntu', roles: %w{app db web}, my_property: :my_v
 # property set. Specify the username and a domain or IP for the server.
 # Don't use `:all`, it's a meta role.
 
-role :app, %w{ubuntu@52.38.115.77}, my_property: :my_value
-role :web, %w{ubuntu@52.38.115.77}, other_property: :other_value
-role :db,  %w{ubuntu@52.38.115.77}
+role :app, %w{ubuntu@demotestapp.com}, my_property: :my_value
+role :web, %w{ubuntu@demotestapp.com}, other_property: :other_value
+role :db,  %w{ubuntu@demotestapp.com}
 
 
 
@@ -41,10 +41,10 @@ role :db,  %w{ubuntu@52.38.115.77}
 #
 # Global options
 # --------------
-set :ssh_options, {
-  keys: %w(/home/sudarshan/aws/aws-console.pem),
-  forward_agent: false
-}
+# set :ssh_options, {
+#   keys: %w(/home/sudarshan/aws/aws-console.pem),
+#   forward_agent: false
+# }
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------

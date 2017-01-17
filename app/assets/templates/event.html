@@ -1,0 +1,88 @@
+<div class="container middle-body">
+	<div class="row">
+		<div class="col-xs-12 col-md-12">
+			<form name="eventForm" ng-controller="neweventCtrl" ng-submit="create()" novalidate>
+				<div class="row">
+					<div class="col-md-2 col-md-offset-1">
+						<div class="form-group" ng-class="errorClass('name')">
+							<label> Event Name </label>
+							<input type="text" class="form-control input-underline" name="name" ng-model="event.name" server-error capitalize-first/>
+							<span class="help-block pull-left" ng-show="eventForm.name.$error.server">{{errors.name}}</span>
+						</div>
+					</div>
+					<div class="col-md-2 col-md-offset-1">
+						<div class="form-group" ng-class="errorClass('date')">
+							<label> Date </label>
+							<input type="date" class="form-control input-underline" name="date" ng-model="event.date" server-error/>
+							<span class="help-block pull-left" ng-show="eventForm.date.$error.server">{{errors.date}}</span>
+						</div>
+					</div>
+					<div class="col-md-2 col-md-offset-1">
+						<div class="form-group" ng-class="errorClass('location')">
+							<label> Location </label>
+							<input type="text" class="form-control input-underline" name="location" ng-model="event.location" server-error/>
+							<span class="help-block pull-left" ng-show="eventForm.location.$error.server">{{errors.location}}</span>
+						</div>
+					</div>
+					<div class="col-md-2 col-md-offset-1">		
+						<div class="form-group" ng-class="errorClass('amount')">
+							<label> Amount </label>
+							<input type="number" class="form-control input-underline" name="amount" ng-model="event.amount" server-error/>
+							<span class="help-block pull-left" ng-show="eventForm.amount.$error.server">{{errors.amount}}</span>
+						</div>
+					</div>	
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-md-4 col-md-offset-1">
+						<div class="form-group" ng-class="errorClass('user_events.user')">
+							<label>Contributor 1</label>
+							<sc-select ng-model="event.user_events_attributes['0'].user_id" sc-options="user.id as user.email for user in users" name="user_events.user" placeholder="Search for a User" class="input-underline pointer-event-none" server-error>
+	  					</sc-select>
+							<span class="help-block pull-left" ng-show="eventForm['user_events.user'].$error.server">{{errors['user_events.user']}}</span>
+						</div>
+					</div>	
+					<div class="col-md-2">
+						<div class="form-group" ng-class="errorClass('user_events.contribution')">
+							<label>Amount</label>
+							<input type="number" class="form-control input-underline" name="user_events.contribution" ng-model="event.user_events_attributes['0'].contribution" server-error/>
+							<span class="help-block pull-left" ng-show="eventForm['user_events.contribution'].$error.server">{{errors['user_events.contribution']}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<a href="#" class="btn btn-primary pull-right" ng-click="addContributer()">Add</a>
+				</div>
+				<div class="row" ng-repeat="i in getTimes(contributers) track by $index">
+					<div class="col-md-4 col-md-offset-1">
+						<div class="form-group" ng-class="errorClass('user_events.user')">
+							<label>Contributor {{$index+2}}</label>
+							<sc-select ng-model="event.user_events_attributes[$index+1].user_id" sc-options="user.id as user.email for user in users" name="user_events.user" placeholder="Search for a User" class="input-underline" server-error>
+	  					</sc-select>
+							<span class="help-block pull-left" ng-show="eventForm['user_events.user'].$error.server">{{errors['user_events.user']}}</span>
+						</div>
+					</div>	
+					<div class="col-md-2">
+						<div class="form-group" ng-class="errorClass('user_events.contribution')">
+							<label>Amount</label>
+							<input type="number" class="form-control input-underline" name="user_events.contribution" ng-model="event.user_events_attributes[$index+1].contribution" server-error/>
+							<span class="help-block pull-left" ng-show="eventForm['user_events.contribution'].$error.server">{{errors['user_events.contribution']}}</span>
+						</div>
+					</div>
+					<div class="col-md-1">
+						<a href="#" class="btn btn-danger btn-xs" ng-click="removeContributer()">Remove</a>
+					</div>
+				</div>
+				<hr/>
+				<div class="row">
+					<div class="col-md-2 col-md-offset-5">
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary align_button" value="Submit Details">
+						</div>
+					</div>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</div>

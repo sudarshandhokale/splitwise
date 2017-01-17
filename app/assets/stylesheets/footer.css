@@ -1,0 +1,13 @@
+footer {
+	background-color: black;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
+    overflow:hidden;
+}
+
+.footer-color{
+	color: white;
+}

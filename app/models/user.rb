@@ -8,6 +8,6 @@ class User < ApplicationRecord
   has_many :events
   has_many :user_events
   has_many :events, through: :user_events
-  has_many :payees, class_name: 'EventLog', foreign_key: :payee_id
-  has_many :payers, class_name: 'EventLog', foreign_key: :payer_id
+  has_many :payers, class_name: 'EventLog', foreign_key: :payee_id
+  has_many :payees, class_name: 'EventLog', foreign_key: :payer_id
 end

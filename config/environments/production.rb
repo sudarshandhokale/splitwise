@@ -83,8 +83,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  ENV['APP_URL'] = 'http://splitwise.com'
-  config.action_cable.url = "ws://splitwise.com:8082/cable"
+  ENV['APP_URL'] = 'http://demotestapp.com:9090'
+  config.action_cable.url = "ws://demotestapp.com:9090/cable"
   config.action_cable.allowed_request_origins = [ENV['APP_URL']]
   config.action_mailer.default_url_options = { :host => ENV['APP_URL'] }
   config.action_mailer.delivery_method = :smtp

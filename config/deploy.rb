@@ -2,7 +2,7 @@
 lock '3.6.0'
 
 set :application, 'splitwise'
-set :repo_url, 'git@gitlab.com:sudarshandhokale/splitwise.git'
+set :repo_url, 'git@github.com:sudarshandhokale/splitwise.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -37,10 +37,10 @@ set :rvm_ruby_version, '2.3.0'
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
-# after 'deploy:publishing', 'deploy:restart'
+after 'deploy:publishing', 'deploy:restart'
 
-# namespace :deploy do
-#   task :restart do
-#     invoke 'unicorn:restart'
-#   end
-# end
+namespace :deploy do
+  task :restart do
+    invoke 'unicorn:restart'
+  end
+end

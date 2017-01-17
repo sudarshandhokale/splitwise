@@ -6,8 +6,8 @@ gem 'rails', '~> 5.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
-# gem 'unicorn'
+# gem 'puma', '~> 3.0'
+gem 'unicorn'
 # gem 'passenger'
 # Use SCSS for stylesheets
 gem 'bootstrap-sass'
@@ -63,8 +63,8 @@ gem 'font-awesome-rails'
 group :development do
   gem 'capistrano'
   gem 'capistrano-bundler'
-  # gem 'capistrano3-unicorn'
-  gem 'capistrano3-puma'
+  gem 'capistrano3-unicorn'
+  # gem 'capistrano3-puma'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
   gem 'capistrano-sidekiq'

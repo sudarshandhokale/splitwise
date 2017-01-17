@@ -37,6 +37,9 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider',
   }).state('home', {
     url: '/',
     templateUrl: 'home.html'
+  }).state('events', {
+    url: '/events',
+    templateUrl: 'event.html'
   });
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
@@ -64,23 +67,22 @@ myApp.factory('httpRequestInterceptor',['ipCookie', function (ipCookie) {
     }
   };
 }]);
-myApp.factory('Role', ['$resource',function($resource){
- return $resource('api/v1/roles', {},{
-   all: { method: 'GET' }
+
+myApp.factory('Events', ['$resource',function($resource){
+ return $resource('api/v1/events', {},{
+   all: {method: 'GET'},
+   create: { method: 'POST' }
  });
 }]);
-myApp.factory('Country', ['$resource',function($resource){
- return $resource('api/v1/countries', {},{
-   all: { method: 'GET' }
+
+myApp.factory('Event', ['$resource',function($resource){
+ return $resource('api/v1/events/:id', {},{
+   update: { method: 'PATCH', params: {id: '@id'} }
  });
 }]);
-myApp.factory('State', ['$resource',function($resource){
- return $resource('api/v1/states', {},{
-   all: { method: 'GET' }
- });
-}]);
-myApp.factory('City', ['$resource',function($resource){
- return $resource('api/v1/cities', {},{
+
+myApp.factory('User', ['$resource',function($resource){
+ return $resource('api/v1/users', {},{
    all: { method: 'GET' }
  });
 }]);

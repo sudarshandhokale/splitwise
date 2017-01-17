@@ -5,7 +5,7 @@ class CreateEventLogs < ActiveRecord::Migration[5.0]
       t.integer :payer_id, index: true, foreign_key: true
       t.integer :payee_id, index: true, foreign_key: true
       t.decimal :amount
-      t.boolean :settled
+      t.boolean :settled, default: false
 
       t.timestamps
     end

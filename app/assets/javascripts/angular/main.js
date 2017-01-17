@@ -61,8 +61,7 @@ app.controller('RegisterCtrl', ['$scope', '$auth', 'Flash', 'Spin',
     Spin.startSpin();
     $auth.submitRegistration($scope.registers).then(function(){
       $scope.registers = { email: '', password: '', password_confirmation: '' };
-      var messages = "You will receive an email with instructions " +
-        "about how to confirm your account in a few minutes."
+      var messages = "Signed Up Successfully..Please login with credentials!!!";
       Flash.create('success', messages, 'custom-class');
       Spin.stopSpin();
     }).catch(function(result){
