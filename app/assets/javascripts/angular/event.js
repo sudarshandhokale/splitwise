@@ -66,16 +66,12 @@ app.controller('eventCtrl', ['$scope', 'Spin', 'Events', 'Event','$state', 'ipCo
               $scope.payee_users[v.payee_id]['amount']) + parseFloat(v.amount);
           }
         };
-      });
-    });
-    angular.forEach(resp.result.hash, function(value, key) {
-      value.forEach(function(v){
         if(v.payee_id==ipCookie('user').id && !v.settled){
           if($scope.payer_users[v.payer_id]==undefined){
             $scope.payer_users[v.payer_id] = { 'name': v.payer.name, 
               'ids':v.id, 'amount': parseFloat(v.amount) };
           }else{
-            $scope.payee_users[v.payee_id]['ids'] += ',' + v.id;
+            $scope.payer_users[v.payer_id]['ids'] += ',' + v.id;
             $scope.payer_users[v.payer_id]['amount'] = parseFloat(
               $scope.payer_users[v.payer_id]['amount']) + parseFloat(v.amount);
           }
@@ -101,10 +97,10 @@ app.controller('eventCtrl', ['$scope', 'Spin', 'Events', 'Event','$state', 'ipCo
         payer['status'] = 'owe';
         $scope.users.push(payer);
       }else{
-        if(payee){
+        if(!angular.equals(payee, {})){
           payee['status'] = 'lent';
           $scope.users.push(payee);
-        }else{
+        }else if(!angular.equals(payer, {})){
           payer['status'] = 'owe';
           $scope.users.push(payer);
         }
@@ -114,9 +110,9 @@ app.controller('eventCtrl', ['$scope', 'Spin', 'Events', 'Event','$state', 'ipCo
 
   $scope.status = function(log, user){
     if(log.payer_id==user.id){
-      return "You lent "+ log.payee.name +" "+log.amount;
+      return "You lent "+ log.payee.name +" "+$scope.round(log.amount);
     }else if(log.payee_id==user.id){
-      return "You owe "+ log.payer.name +" "+log.amount;
+      return "You owe "+ log.payer.name +" "+$scope.round(log.amount);
     };
   };
 
@@ -135,5 +131,9 @@ app.controller('eventCtrl', ['$scope', 'Spin', 'Events', 'Event','$state', 'ipCo
       $state.reload();
       Spin.stopSpin();
     });
+  };
+
+  $scope.round = function(amount){
+    return Math.round(amount*100)/100
   };
 }]);

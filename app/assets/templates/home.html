@@ -11,7 +11,7 @@
 				<div class="card">
 					<div class="card-block">
 						<h4 class="card-title">{{event.name}}</h4>
-						<p class="card-text">Date: {{event.date}}<br/>Location: {{event.location}}<br/>Total Amount: {{event.amount}}</p>
+						<p class="card-text">Date: {{event.date}}<br/>Location: {{event.location}}<br/>Total Amount: {{round(event.amount)}}</p>
 					</div>
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item" ng-repeat="log in event_logs[event.id]">{{status(log, user)}}<br/><a href="#" class="card-link btn btn-xs btn-success" ng-if="!log.settled" ng-click="settled(log)">Settle</a>
@@ -29,7 +29,7 @@
 				</div>
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item" ng-repeat="userlog in users">
-						You {{userlog.status}} {{userlog.name}} {{userlog.amount}}
+						You {{userlog.status}} {{userlog.name}} {{round(userlog.amount)}}
 						<br/><a href="#" class="card-link btn btn-xs btn-success" ng-if="!log.settled" ng-click="settled_multiple(userlog)">Settle</a>
 					</li>
 				</ul>
